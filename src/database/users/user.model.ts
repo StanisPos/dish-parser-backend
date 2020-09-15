@@ -7,24 +7,20 @@ import {
 } from 'sequelize-typescript';
 
 @Table
-export class Login extends Model<Login> {
+export class User extends Model<User> {
   @Column
-  userName: string;
+  firstName: string;
 
   @Column
-  email: string;
+  lastName: string;
 
   @Column
-  password: string;
+  birthday: Date;
 
   @Column
-  accessLevel: number;
-
-  @Column
-  role: string;
-
-  @Column({ defaultValue: true })
-  isActive: boolean;
+  get age(): number {
+    return new Date().getFullYear() - this.birthday.getFullYear();
+  }
 
   @CreatedAt
   creationDate: Date;

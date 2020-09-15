@@ -1,22 +1,28 @@
+import { config } from 'dotenv';
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { User } from './database/models/user/user.model';
+import { UserModule } from './database/users/user.module';
+
+config();
+
+const dbPort = Number(process.env.PORT_DB);
+const dbUserName = process.env.ADMIN_DB;
+const dbName = process.env.NAME_DB;
+const dbPassword = process.env.PASS_DB;
 
 @Module({
   imports: [
     SequelizeModule.forRoot({
       dialect: 'mysql',
       host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'test',
-      models: [User],
+      port: dbPort,
+      username: dbUserName,
+      password: dbPassword,
+      database: dbName,
+      autoLoadModels: true,
+      synchronize: true,
     }),
+    UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
